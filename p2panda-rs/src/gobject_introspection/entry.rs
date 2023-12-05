@@ -120,7 +120,7 @@ pub extern "C" fn p2panda_sign_and_encode_entry(
     .unwrap();
 
     // Return result as a hexadecimal string
-    let c_string: CString = CString::new(entry_encoded.to_string().as_str()).unwrap();
+    let c_string = CString::new(entry_encoded.to_string().as_str()).unwrap();
     unsafe { strdup(c_string.as_ptr()) }
 }
 
