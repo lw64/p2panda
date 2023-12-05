@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+use libc::{c_char, c_int, strdup};
 use std::{
     convert::TryFrom,
     ffi::{CStr, CString},
 };
 
 use ed25519_dalek::Signature;
-use glib_sys::g_strdup;
-use libc::{c_char, c_int};
 
 use crate::identity::{KeyPair as KeyPairNonC, PublicKey};
 
@@ -59,7 +58,7 @@ pub extern "C" fn p2panda_key_pair_get_public_key(instance: *mut KeyPair) -> *mu
     };
     let key = key_pair.0.public_key().to_bytes();
     let c_string = CString::new(key).unwrap();
-    unsafe { g_strdup(c_string.as_ptr()) }
+    unsafe { strdup(c_string.as_ptr()) }
 }
 
 #[no_mangle]
@@ -70,7 +69,7 @@ pub extern "C" fn p2panda_key_pair_get_private_key(instance: *mut KeyPair) -> *m
     };
     let key = key_pair.0.private_key().to_bytes();
     let c_string = CString::new(key).unwrap();
-    unsafe { g_strdup(c_string.as_ptr()) }
+    unsafe { strdup(c_string.as_ptr()) }
 }
 
 #[no_mangle]
@@ -90,7 +89,7 @@ pub extern "C" fn p2panda_key_pair_sign(
 
     let signature = key_pair.0.sign(c_str.to_str().unwrap().as_bytes());
     let c_string = CString::new(signature.to_bytes()).unwrap();
-    unsafe { g_strdup(c_string.as_ptr()) }
+    unsafe { strdup(c_string.as_ptr()) }
 }
 
 #[no_mangle]

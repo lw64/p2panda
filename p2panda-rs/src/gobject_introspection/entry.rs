@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-extern crate libc;
-
-use glib_sys::g_strdup;
-use libc::c_char;
+use libc::{c_char, strdup};
 use std::ffi::CStr;
 use std::ffi::CString;
 
@@ -123,8 +120,8 @@ pub extern "C" fn p2panda_sign_and_encode_entry(
     .unwrap();
 
     // Return result as a hexadecimal string
-    let c_string = CString::new(entry_encoded.to_string().as_str()).unwrap();
-    unsafe { g_strdup(c_string.as_ptr()) }
+    let c_string: CString = CString::new(entry_encoded.to_string().as_str()).unwrap();
+    unsafe { strdup(c_string.as_ptr()) }
 }
 
 /// p2panda_decode_entry:
